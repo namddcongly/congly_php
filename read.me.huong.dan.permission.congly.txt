@@ -1,0 +1,3 @@
+Thu muc nay phai duoc own write boi apache
+
+/home/congly.com.vn/public_html/webskins/richtext/kcfinder/upload

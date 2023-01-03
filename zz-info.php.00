@@ -1,0 +1,17 @@
+<?php
+ini_set('display_errors',1);
+//print_r($_SERVER);
+$memcache = new Memcache;
+$memcache->addServer('localhost', 11211);
+$id= '1111';
+$ip_client = $_SERVER['HTTP_X_REAL_IP'];
+$key_memcache = $ip_client.'.'.$id;
+if($memcache->get($key_memcache) || $id == 0 || $ip_client == '42.114.142.136'){
+    return false;
+}
+//$memcache->set($key_memcache,$id,MEMCACHE_COMPRESSED,60);
+echo $memcache->get($key_memcache);
+//$memcache->set('log_hit',$memcache->get('log_hit').','.$id);
+echo 'Done!';
+
+//echo file_get_contents('http://toaanhanam.gov.vn/ajax.php?fnc=getnewscly&path=news&nw_id=124004');
