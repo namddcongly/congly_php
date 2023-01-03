@@ -16,30 +16,36 @@ class Url
         $portal = '';
         $page = '';
 
-        if (is_array($_GET))
+        if (is_array($_GET)) {
             foreach ($_GET as $key => $value) {
                 if (!in_array($key, $arrExpelParam)) {
-                    if ($key == 'app')
+                    if ($key == 'app') {
                         $portal = $value;
-                    elseif ($key == 'page')
+                    } elseif ($key == 'page') {
                         $page = $value;
-                    else if (!$url) {
-                        $url = '?' . urlencode($key) . '=' . urlencode($value);
                     } else {
-                        $url .= '&' . urlencode($key) . '=' . urlencode($value);
+                        if (!$url) {
+                            $url = '?' . urlencode($key) . '=' . urlencode($value);
+                        } else {
+                            $url .= '&' . urlencode($key) . '=' . urlencode($value);
+                        }
                     }
                 }
             }
-        if ($portal == '')
+        }
+        if ($portal == '') {
             $portal = $_GET ['app'];
-        if ($page == '')
+        }
+        if ($page == '') {
             $page = $_GET ['page'];
+        }
         $arr = array("?");
 
-        if ($url != '')
+        if ($url != '') {
             $url = str_replace($arr, "?app=" . $portal . "&page=" . $page . "&", $url);
-        else
+        } else {
             $url = "?app=" . $portal . "&page=" . $page;
+        }
 
         if ($strAddParam) {
             if ($url) {
@@ -60,17 +66,20 @@ class Url
 
     static public function buildUrlRewrite($arrParam = array(), $portal = '', $page = '', $page_no = false)
     {
-        if (count($arrParam) > 0 && is_array($arrParam))
-            foreach ($arrParam as $key => $ar)
+        if (count($arrParam) > 0 && is_array($arrParam)) {
+            foreach ($arrParam as $key => $ar) {
                 $ext .= "&$key=" . $ar;
+            }
+        }
 
         return "?app=$portal&page=$page" . $ext;
     }
 
     static function news_congly_cate($param)
     {
-        if (isset($param['page_no']) && !isset($param['province_id']))
+        if (isset($param['page_no']) && !isset($param['province_id'])) {
             return '/' . $param['title'] . '/trang-' . $param['page_no'] . '/';
+        }
         return '/' . $param['title'] . '/';
     }
 
@@ -81,18 +90,20 @@ class Url
 
     static function news_detail($param)
     {
-        return '/' . trim($param['cate_alias'], '/') . '-' . $param['cate_id'] . '/' . $param['title'] . '-' . $param['id'] . '.html';
+        return '/' . trim($param['cate_alias'],
+                '/') . '-' . $param['cate_id'] . '/' . $param['title'] . '-' . $param['id'] . '.html';
     }
 
     static function news_congly_home($param)
     {
-        return '/' . trim($param['title'], '/') . '-' . $param['cate_id'] . '/' . $param['title'] . '-' . $param['id'] . '.html';
+        return '/' . trim($param['title'],
+                '/') . '-' . $param['cate_id'] . '/' . $param['title'] . '-' . $param['id'] . '.html';
     }
 
     static public function redirectUrl($params = array(), $url = false, $page = false, $portal = '')
     {
         if ($url) {
-            if ((!@header('HTTP/1.1 303 See Other', TRUE, 303) and !@header('Location:' . $url))) {
+            if ((!@header('HTTP/1.1 303 See Other', true, 303) and !@header('Location:' . $url))) {
                 echo '<head><meta http-equiv="Refresh" content="0;url=\'' . $url . '\'"/>';
                 echo '<script language="javascript">window.location.href="' . $url . '";</script></head>';
             }
@@ -106,25 +117,29 @@ class Url
     static function link($param = array(), $app = "", $page = "")
     {
         include_once UTILS_PATH . 'convert.php';
-        if (isset($param['title']))
+        if (isset($param['title'])) {
             $param['title'] = Convert::convertLinkTitle($param['title']);
-        if (isset($param['name']))
+        }
+        if (isset($param['name'])) {
             $param['name'] = Convert::convertLinkTitle($param['name']);
-        if (isset($param['alias']))
+        }
+        if (isset($param['alias'])) {
             $param['alias'] = str_replace(',', "", $param['alias']);
+        }
         $app = $app == "" ? $_GET['app'] : $app;
         $page = $page == "" ? $_GET['page'] : $page;
         $page = str_replace('-', '_', $page);
         $function = $app . '_' . $page;
 
 
-        if (REWRITE)
+        if (REWRITE) {
             return Url::$function($param);
-        else {
+        } else {
             $link = "?app=$app&page=$page";
             if (count($param) > 0 && is_array($param)) {
-                foreach ($param as $key => $p)
+                foreach ($param as $key => $p) {
                     $link .= "&$key=$p";
+                }
             }
             return $link;
         }
@@ -138,12 +153,14 @@ class Url
     {
         if ($param['tag']) {
             //$param['q']=Convert::convertLinkTitle($param['q']);
-            if (isset($param['page_no']))
+            if (isset($param['page_no'])) {
                 return 'tag/' . $param['q'] . '/trang-' . $param['page_no'] . '/';
+            }
             return 'tag/' . $param['q'] . '/';
         }
-        if (isset($param['page_no']))
+        if (isset($param['page_no'])) {
             return 'search/' . $param['q'] . '/trang-' . $param['page_no'] . '/';
+        }
         return 'search/' . $param['q'] . '/';
     }
 
@@ -158,9 +175,20 @@ class Url
         return '/' . $param['topic_id'] . '/' . $param['name'] . '/';
     }
 
-    static function link_detail($row,$list_category)
+    static function link_detail($row, $list_category)
     {
-        $data = array('id' => isset($row['nw_id']) ? $row['nw_id'] : $row['id'], 'title' => $row['title'], 'cate_id' => $row['cate_id'], 'cate_alias' => $list_category[$row['cate_id']]['alias']);
+        $data = array(
+            'id' => isset($row['nw_id']) ? $row['nw_id'] : $row['id'],
+            'title' => $row['title'],
+            'cate_id' => $row['cate_id'],
+            'cate_alias' => $list_category[$row['cate_id']]['alias']
+        );
+
+        //Infographic page
+        if (@$row['type_post'] == '6') {
+            $data['cate_alias'] = $data['cate_alias'].'/infographic/';
+        }
+
         return self::link($data, 'news', 'congly_detail');
     }
 
