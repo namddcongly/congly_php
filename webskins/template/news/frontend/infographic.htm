@@ -17,6 +17,27 @@
         text-align: center;
         max-width: 1100px;
     }
+
+    @media all and (min-width: 1130px) {
+        .news-detail-info{
+            width: 1130px;
+        }
+        div.detail-related-item {
+            width: 265px;
+        }
+        a.detail-related-img img {
+            width: 240px;
+            height: 150px;
+        }
+
+    }
+    @media only screen and (max-width: 420px) {
+        img {
+            text-align: center;
+            max-width: 380px;
+        }
+    }
+
 </style>
 <div style="width: 100%;border-bottom: 2px solid #E0E0DD; height: 25px">
     <div class="breadcrumb">
@@ -33,12 +54,52 @@
 <div class="clear"></div>
 <div class="content-infographic">
     <h1 class="news-detail-header">{title}</h1>
-    <div class="image" style="text-align: center"><img style="display: inline" src="{src}" class="infographic-img"></div>
+    <div class="image" style="text-align: center"><img style="display: inline" src="{src}" class="infographic-img">
+    </div>
     <h2 class="description">{description}</h2>
-    <div class="news-detail-info" style="width: 1130px; margin: auto">
+    <div class="news-detail-info">
         {detail}
     </div>
+    {related}
     <div class="ntd-author">{author}</div>
+    <div class="tag-header">
+        <div class="tag-header-description">
+            Bạn đang đọc bài viết <a href="{link_detail}">{title}</a> tại chuyên mục <a href="{cate_parent_href}">{cate_parent_name}</a>
+            của <a href="/">Báo điện tử Công lý</a>.
+        </div>
+    </div>
+    <div style="clear: both"></div>
+    <!--Tin liên quan-->
+    <div class="detail-related">
+        <h4 class="detail-related-title">Tin tức cùng chuyên mục</h4>
+        <div class="detail-related-list">
+            <!-- BEGIN Same -->
+            <div class="detail-related-item">
+                <a href="{same_link}" class="detail-related-img" title="{same_html_title}">
+                    <img src="{same_img}" alt="{same_html_title}"/>
+                </a>
+                <a href="{same_link}" class="title15" title="{same_html_title}">{same_title}</a>
+            </div>
+            <!-- END Same -->
+            <div class="clear"></div>
+        </div>
+    </div>
+    <div style="clear: both"></div>
+    <!-- Tin mới khác chuyên mục -->
+    <div class="detail-related">
+        <h4 class="detail-related-title">Tin tức mới nhất</h4>
+        <div class="detail-related-list">
+            <!-- BEGIN Other -->
+            <div class="detail-related-item">
+                <a href="{other_link}" class="detail-related-img" title="{other_html_title}">
+                    <img src="{other_img}" alt="{other_html_title}"/>
+                </a>
+                <a href="{other_link}" class="title15" title="{other_html_title}">{other_title}</a>
+            </div>
+            <!-- END Other -->
+            <div class="clear"></div>
+        </div>
+    </div>
 </div>
 
 
