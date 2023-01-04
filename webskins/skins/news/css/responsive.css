@@ -2448,6 +2448,15 @@ a:hover.titleb18 {
 }
 
 @media all and (min-width: 768px) {
+    .kinhte-wrapper {
+        display: flex;
+        gap: 10px;
+    }
+
+    .right-mobile {
+        display: none;
+    }
+
     nav:not(.mm-menu) {
         display: block;
     }
@@ -2951,10 +2960,12 @@ div:hover.header-menu >nav >ul >li:hover >ul{
         width: 47%;
         margin-top: 4px;
         margin-right: 0px;
+        height: auto;
     }
 
     a.hot-leftnews-img img {
         width: 100%;
+        height: 120px;
     }
 
     div.hot-leftnews-description {
@@ -3124,6 +3135,10 @@ div:hover.header-menu >nav >ul >li:hover >ul{
 
     div.pub-lnews-item {
         padding-bottom: 10px;
+    }
+
+    div.pub-lnews-item video {
+        width: 100%;
     }
 
     a.pub-lnews-img {
@@ -4549,11 +4564,6 @@ div:hover.header-menu >nav >ul >li:hover >ul{
 }
 
 @media all and (min-width: 1130px) {
-    .kinhte-wrapper {
-        display: flex;
-        gap: 10px;
-    }
-
     div.wrapper {
         margin: auto;
         width: 1130px;
@@ -4940,10 +4950,6 @@ div:hover.header-menu >nav >ul >li:hover >ul{
 
     div.jCarouselLitett li:nth-child(6) {
         clear: both;
-    }
-
-    .right-mobile {
-        display: none;
     }
 
     .c-item-active {
