@@ -205,20 +205,7 @@ class Congly_Home_Center
             $this->showIcon($row, $prefix . $k);
             joc()->set_var('html_title_' . $prefix . $k, htmlspecialchars($row['title']));
             joc()->set_var('title_html_' . $prefix . $k, htmlspecialchars($row['title']));
-            if ($cate_id == 293) // Giải trí
-            {
-                if ($k == 1 || $k == 2) {
-                    joc()->set_var('img_' . $prefix . $k, IMG::thumb($row, 'cnd_220x315'));
-                } else {
-                    joc()->set_var('img_' . $prefix . $k, IMG::thumb($row, 'cnn_150x100'));
-                }
-            } else {
-                if ($k == 1) {
-                    joc()->set_var('img_' . $prefix . $k, IMG::show($row));
-                } else {
-                    joc()->set_var('img_' . $prefix . $k, IMG::thumb($row, 'cnn_150x100'));
-                }
-            }
+            joc()->set_var('img_' . $prefix . $k, IMG::thumb($row));
             ++$k;
         }
     }
