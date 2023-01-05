@@ -99,7 +99,7 @@ class AdminNews extends Form
         if ($_FILES['img1']['name']) {
             $uploader = new Uploader();
             $uploader->setPath($path_img_upload);
-            $uploader->setMaxSize(50000);
+            $uploader->setMaxSize(500000);
             $uploader->setFileType('custom', array('jpg', 'jpeg', 'png', 'web', 'gif', 'bmp'));
             $result = $uploader->doUpload('img1');
             $arr_info_image = getimagesize($result['path'] . $result['name']);
@@ -476,38 +476,8 @@ class AdminNews extends Form
 
     function index()
     {
-
-
-        $curl = curl_init();
-        curl_setopt_array($curl, array(
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_URL => 'https://www3.congly.vn/crawler.php',
-            CURLOPT_USERAGENT => 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.8.1.6)    Gecko/20070725 Firefox/2.0.0.6',
-            CURLOPT_SSL_VERIFYPEER => false
-        ));
-        $newsObj = new BackendNews();
-        $data = curl_exec($curl);
-        $datas = json_decode($data, true);
-        foreach ($datas as $t){
-            $content = $t['content'];
-            $t['title'] = $t['title'].'tttttttttttttttttttt';
-            $t['user_id'] = 1;
-            unset($t['content']);
-            $id = $newsObj->insertData('store',$t);
-            if($id){
-                $newsObj->insertData('store_content',array('nw_id' =>$id, 'content' => $content));
-            }
-        }
-        echo $id;
-        echo 'ngon';
-        die;
-
-
-
-        {
-            if (!UserCurrent::isLogin()) {
-                @header('Location:?app=main&page=admin_login');
-            }
+        if (!UserCurrent::isLogin()) {
+            @header('Location:?app=main&page=admin_login');
         }
 
         $cmd = SystemIO::get('cmd', 'str', 'intro');
@@ -815,7 +785,7 @@ class AdminNews extends Form
         $cate_id = SystemIO::get('cate_id', 'int', 0);
         joc()->set_var('option_category',
             SystemIO::getOption(SystemIO::arrayToOption($list_category, 'id', 'name'), $cate_id));
-        $wh = '(time_public = 0 OR time_public > ' . time() . ') AND cate_id <> 370';
+        $wh = '(time_public IS NULL OR time_public = 0 OR time_public > ' . time() . ')';
         if ($q) {
             $wh .= " AND (title LIKE '%{$q}%' OR description LIKE '%{$q}%')";
         }
@@ -903,7 +873,7 @@ class AdminNews extends Form
                 $path_img = 'news/icons/';
             }
             if ($src == '100x100.jpg') {
-                joc()->set_var('src', 'news/icons/100x100.jpg');
+                joc()->set_var('src', 'data/news/icons/100x100.jpg');
             } else {
                 joc()->set_var('src', IMG::show($path_img, $src));
             }
@@ -1113,7 +1083,7 @@ class AdminNews extends Form
                 $src = $row['img3'];
             } else {
                 $src = '100x100.jpg';
-                $path_img = 'news/icons/';
+                $path_img = 'data/news/icons/';
             }
             joc()->set_var('src', IMG::show($path_img, $src));
             $property = '';
@@ -1307,7 +1277,7 @@ class AdminNews extends Form
                 $src = $row['img3'];
             } else {
                 $src = '100x100.jpg';
-                $path_img = 'news/icons/';
+                $path_img = 'data/news/icons/';
             }
             joc()->set_var('src', IMG::show($path_img, $src));
             joc()->set_var('origin', $row['origin'] ? $row['origin'] : 'N/A');
@@ -1488,7 +1458,7 @@ class AdminNews extends Form
                 $src = $row['img3'];
             } else {
                 $src = '100x100.jpg';
-                $path_img = 'news/icons/';
+                $path_img = 'data/news/icons/';
             }
             joc()->set_var('src', IMG::show($path_img, $src));
             ++$stt;
@@ -1679,7 +1649,7 @@ class AdminNews extends Form
 
             $user_name_editor = '';
             $list_editor = explode(',', $row['editor_id']);
-            $list_editor = array_unique($list_editor);
+            #$list_editor = array_unique($list_editor);
             for ($i = 0; $i < count($list_editor); ++$i) {
                 $user_name_editor .= $list_censor_user_name_and_name_btv[$list_editor[$i]]['user_name'] . '<br/>,';
             }
@@ -1691,7 +1661,7 @@ class AdminNews extends Form
             joc()->set_var('time_public', date('H:i d-m-Y', $row['time_public']));
             //joc()->set_var('href','http://congly.com.vn/?app=news&page=congly_detail&id='.$row['id']);
             joc()->set_var('href',
-                'http://congly.vn/' . $list_category_all[$row['cate_id']]['alias'] . '/' . Convert::convertLinkTitle($row['title']) . '-' . $row['id'] . '.html');
+                'https://congly.vn/' . $list_category_all[$row['cate_id']]['alias'] . '/' . Convert::convertLinkTitle($row['title']) . '-' . $row['id'] . '.html');
             joc()->set_var('hit', (int)$list_news_hit[$row['id']]['hit']);
             $path_img = $newsObj->getPathNews($row['time_created']);
             if ($row['img1']) {
@@ -1702,7 +1672,7 @@ class AdminNews extends Form
                 $src = $row['img3'];
             } else {
                 $src = '100x100.jpg';
-                $path_img = 'news/icons/';
+                $path_img = 'data/news/icons/';
             }
             joc()->set_var('src', IMG::show($path_img, $src));
 
@@ -1722,14 +1692,14 @@ class AdminNews extends Form
             $title_pos = '';
             if ($row['type'] == 1) {
                 $title_pos = 'Tin được xuất bản là tin hiển thị trang chủ';
-                $bg = "#EBBFF2";
+                $bg = "#ebebeb";
                 if ($list_home[$row['id']]['property'] & NEWS_FEATURED) {
-                    $title_pos = " Tin được xuất bản là tin NỔI BẬT TRANG CHỦ";
-                    $bg = "#D912F6";
+                    $title_pos = " Tin được xuất bản là tin TIÊU ĐIỂM TRANG CHỦ";
+                    $bg = "#FFFFCC";
                 }
                 if ($list_home[$row['id']]['property'] & NEWS_FEATURED_CATE) {
                     $title_pos .= ' Tin được xuất bản là tin NỔI BẬT MỤC TRANG CHỦ';
-                    $bg = "#EBBFF2";
+                    $bg = "#0faffa";
                 }
             } else {
                 $bg = "#FFF";
@@ -2170,7 +2140,7 @@ class AdminNews extends Form
                 $src = $row['img3'];
             } else {
                 $src = '100x100.jpg';
-                $path_img = 'news/icons/';
+                $path_img = 'data/news/icons/';
             }
             joc()->set_var('src', IMG::show($path_img, $src));
             joc()->set_var('origin', $row['origin'] ? SystemIO::strLeft($row['origin'], 50) : 'N/A');
@@ -2372,7 +2342,7 @@ class AdminNews extends Form
                 $src = $row['img3'];
             } else {
                 $src = '100x100.jpg';
-                $path_img = 'news/icons/';
+                $path_img = 'data/news/icons/';
             }
             joc()->set_var('src', IMG::show($path_img, $src));
             joc()->set_var('origin', $row['origin'] ? SystemIO::strLeft($row['origin'], 50) : 'N/A');

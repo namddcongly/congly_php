@@ -19,8 +19,7 @@ Class BackendNews
     {
         //$config = array('username' => 'root', 'password' => '', 'host' => 'localhost', 'host_reserve' => 'localhost', 'dbname' => 'congly_news');
         $config = array('username' => 'congly', 'password' => 'qTKCMLdxzx7mjX7G', 'host' => 'localhost', 'host_reserve' => 'localhost', 'dbname' => 'congly_news');
-        //$config = array('username' => 'root', 'password' => 'Root@123', 'host' => 'localhost', 'host_reserve' => 'localhost', 'dbname' => 'congly_mssql_fe');
-        //$config = array('username' => 'root', 'password' => 'ePxVnTfq9uTU2nUY', 'host' => 'localhost', 'host_reserve' => 'localhost', 'dbname' => 'congly_mssql_fe');
+        #$config = array('username' => 'root', 'password' => 'ePxVnTfq9uTU2nUY', 'host' => 'localhost', 'host_reserve' => 'localhost', 'dbname' => 'congly_mssql_fe');
         self::$dbNews = new SingleDatabase($config);
     }
 
