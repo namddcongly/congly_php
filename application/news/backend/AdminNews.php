@@ -1946,12 +1946,20 @@ class AdminNews extends Form
         joc()->set_var('poll', $row['poll_id']);
         joc()->set_var('topic', isset($row['topic_id']) ? $row['topic_id'] : '');
         joc()->set_var('is_video', $row['is_video'] ? 'checked="checked"' : "");
-        joc()->set_var('img1', $row['img1'] ? '<img src="' . IMG::show($newsObj->getPathNews($row['time_created']),
-                $row['img1']) . '" width="100px;" />' : '');
-        joc()->set_var('img2', $row['img2'] ? '<img src="' . IMG::show($newsObj->getPathNews($row['time_created']),
-                $row['img2']) . '" width="100px;" />' : '');
-        joc()->set_var('img3', $row['img3'] ? '<img src="' . IMG::show($newsObj->getPathNews($row['time_created']),
-                $row['img3']) . '" width="100px;" />' : '');
+        if ($row['img1']) {
+            joc()->set_var('img1',
+                $row['img1'] ? '<img id="img1" src="' . IMG::show($newsObj->getPathNews($row['time_created']),
+                        $row['img1']) . '" width="180px;" /><br/>' : '');
+        } else {
+            joc()->set_var('img1', '<img id="img1" width="180px;" /><br/>');
+        }
+
+        joc()->set_var('img2',
+            $row['img2'] ? '<img id="img2" src="' . IMG::show($newsObj->getPathNews($row['time_created']),
+                    $row['img2']) . '" width="120px;" />' : '');
+        joc()->set_var('img3',
+            $row['img3'] ? '<img id="img2" src="' . IMG::show($newsObj->getPathNews($row['time_created']),
+                    $row['img3']) . '" width="100px;" />' : '');
         joc()->set_var('img4', $row['img4'] ? '<img src="' . IMG::show($newsObj->getPathNews($row['time_created']),
                 $row['img4']) . '" width="100px;" />' : '');
         joc()->set_var('img5', $row['img5'] ? '<img src="' . IMG::show($newsObj->getPathNews($row['time_created']),

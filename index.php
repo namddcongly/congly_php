@@ -1,7 +1,7 @@
 <?php
 session_cache_expire(3600);
 session_start();
-ini_set('display_errors', 0);
+ini_set('display_errors', 1);
 $uri = $_SERVER['REQUEST_URI'];
 $query_string = $_SERVER['QUERY_STRING'];
 $srcipt_name = $_SERVER['SCRIPT_NAME'];
