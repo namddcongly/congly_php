@@ -1475,6 +1475,14 @@ class AdminNews extends Form
         Page::registerFile('jqDnR', JAVASCRIPT_PATH . 'jqDnR.js', 'footer', 'js');
         $newsObj = new BackendNews();
         $userObj = new User();
+        $memcache = new Memcache();
+        $memcache->addServer('localhost', 11211);
+
+        // Đóng bài viết xóa key memcache
+        if (SystemIO::get('nw_id')) {
+            $memcache->delete('active_reading' . SystemIO::get('nw_id'));
+        }
+
         /* Tìm kiếm */
         $list_category_all = $newsObj->getListCategory('', '', 500, 'id');
         $list_topic = $newsObj->getListData('topic', 'id,name,property,time_created', 'property >0', '', '0,500', 'id',
@@ -1522,18 +1530,19 @@ class AdminNews extends Form
             $wh .= ' AND type_post=' . $type_post;
         }
         $a_type_post = array(
-            '0' => 'Bài sưu tầm',
-            '1' => 'Thông tấn xã',
-            '2' => 'Dịch',
-            '3' => 'Tự viết',
-            '4' => 'Tin tổng hợp'
+            '0' => 'Bài dẫn nguồn',
+            '1' => 'Bài thông tấn xã',
+            '2' => 'Bài dịch',
+            '3' => 'Bài tự viết',
+            '4' => 'Bài tổng hợp',
+            '6' => 'Infographic'
         );
         $type_post_t = '';
         foreach ($a_type_post as $k => $v) {
             if ($k == (int)$type_post) {
-                $type_post_t .= '<input type="radio" name="type_post" value="' . $k . '" checked="checked"> ' . $v . '&nbsp;';
+                $type_post_t .= '<input type="radio" name="type_post" value="' . $k . '" checked="checked"> ' . $v . '&nbsp;&nbsp;';
             } else {
-                $type_post_t .= '<input type="radio" name="type_post" value="' . $k . '"> ' . $v . '&nbsp;';
+                $type_post_t .= '<input type="radio" name="type_post" value="' . $k . '"> ' . $v . '&nbsp;&nbsp;';
             }
         }
         joc()->set_var('type_post', $type_post_t);
@@ -1620,8 +1629,6 @@ class AdminNews extends Form
         joc()->set_block('AdminNews', 'ListRow', 'ListRow');
         $text_html = '';
         global $NEWS_PROPERTY;
-        $memcache = new Memcache();
-        $memcache->addServer('localhost', 11211);
         foreach ($list_news as $row) {
             joc()->set_var('title', strip_tags($row['title']));
             joc()->set_var('nw_id', $row['id']);
@@ -1995,20 +2002,21 @@ class AdminNews extends Form
         joc()->set_var('option_hour', SystemIO::getOption($arr_hour, $hour_public));
         joc()->set_var('date_public', $date_public);
         joc()->set_var('minutes', $minutes);
+
         $a_type_post = array(
+            '0' => 'Bài dẫn nguồn',
+            '1' => 'Bài thông tấn xã',
+            '2' => 'Bài dịch',
             '3' => 'Bài tự viết',
-            '5' => 'Tin tự viết',
-            '2' => 'Dịch',
-            '0' => 'Bài Copy',
-            '4' => 'Tin tổng hợp',
+            '4' => 'Bài tổng hợp',
             '6' => 'Infographic'
         );
         $type_post = '';
         foreach ($a_type_post as $k => $v) {
             if ($k == (int)$row['type_post']) {
-                $type_post .= '<input type="radio" name="type_post" value="' . $k . '" checked="checked"> ' . $v . '&nbsp;';
+                $type_post .= '<input type="radio" name="type_post" value="' . $k . '" checked="checked"> ' . $v . '&nbsp;&nbsp;&nbsp;&nbsp;';
             } else {
-                $type_post .= '<input type="radio" name="type_post" value="' . $k . '"> ' . $v . '&nbsp;';
+                $type_post .= '<input type="radio" name="type_post" value="' . $k . '"> ' . $v . '&nbsp;&nbsp;&nbsp;&nbsp;';
             }
         }
         joc()->set_var('type_post', $type_post);
