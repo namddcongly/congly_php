@@ -55,14 +55,9 @@ class AdminNews extends Form
         $memcache = new Memcache();
         $memcache->addServer('localhost', 11211);
         $key_memcache = 'active_reading';
-        $active_reading_cache = $memcache->get($key_memcache);
-        foreach ($active_reading_cache as $user_id_reading => $news_id_cache) {
-            if ($news_id == $news_id_cache && $user_id_reading == $user_info['id']) {
-                unset($active_reading_cache[$user_info['id']]);
-            }
+        if ($news_id) {
+            $memcache->delete($key_memcache . $news_id);
         }
-
-        $memcache->set($key_memcache, $active_reading_cache, MEMCACHE_COMPRESSED, 3600);
 
         $IMG_MAX_SIZE = 480640;
         $from = SystemIO::post('from', 'def', 'review');
@@ -503,18 +498,10 @@ class AdminNews extends Form
 
                 $newsObj = new BackendNews();
                 $total_home_record = $newsObj->countRecord('store_home');
-                if ($total_home_record > 10000) {
-                    echo '<script type="text/javascript">alert("Số tin trên trang chủ quá nhiều, bạn phải vào xóa để tiếp tục vào tab này!");</script>';
-                    echo '<script language="javascript">window.location.href="' . ROOT_URL . '?app=news&page=admin_news";</script></head>';
-                }
                 return $this->adminPendingPublic();
             case 'pending_censor':
                 $newsObj = new BackendNews();
                 $total_home_record = $newsObj->countRecord('store_home');
-                if ($total_home_record > 10000) {
-                    echo '<script type="text/javascript">alert("Số tin trên trang chủ quá nhiều, bạn phải vào xóa để tiếp tục vào tab này!");</script>';
-                    echo '<script language="javascript">window.location.href="' . ROOT_URL . '?app=news&page=admin_news";</script></head>';
-                }
                 return $this->adminPendingCensor();
             case 'news_return':
                 return $this->adminNewsReturn();
@@ -522,10 +509,6 @@ class AdminNews extends Form
             case 'news_store':
                 $newsObj = new BackendNews();
                 $total_home_record = $newsObj->countRecord('store_home');
-                if ($total_home_record > 10000) {
-                    echo '<script type="text/javascript">alert("Số tin trên trang chủ quá nhiều, bạn phải vào xóa để tiếp tục vào tab này!");</script>';
-                    echo '<script language="javascript">window.location.href="' . ROOT_URL . '?app=news&page=admin_news";</script></head>';
-                }
                 if (!UserCurrent::havePrivilege('NEWS_STORE')) {
                     Url::urlDenied();
                 }
@@ -1637,7 +1620,8 @@ class AdminNews extends Form
         joc()->set_block('AdminNews', 'ListRow', 'ListRow');
         $text_html = '';
         global $NEWS_PROPERTY;
-
+        $memcache = new Memcache();
+        $memcache->addServer('localhost', 11211);
         foreach ($list_news as $row) {
             joc()->set_var('title', strip_tags($row['title']));
             joc()->set_var('nw_id', $row['id']);
@@ -1659,7 +1643,6 @@ class AdminNews extends Form
                 SystemIO::getOption(SystemIO::arrayToOption($list_topic, 'id', 'name'), $row['topic_id']));
             joc()->set_var('tag', $row['tag'] ? $row['tag'] : 'N/A');
             joc()->set_var('time_public', date('H:i d-m-Y', $row['time_public']));
-            //joc()->set_var('href','http://congly.com.vn/?app=news&page=congly_detail&id='.$row['id']);
             joc()->set_var('href',
                 'https://congly.vn/' . $list_category_all[$row['cate_id']]['alias'] . '/' . Convert::convertLinkTitle($row['title']) . '-' . $row['id'] . '.html');
             joc()->set_var('hit', (int)$list_news_hit[$row['id']]['hit']);
@@ -1706,13 +1689,26 @@ class AdminNews extends Form
                 $title_pos = "Tin được xuất bản là tin thông thường";
             }
 
+            $key_memcache_reading = 'active_reading' . $row['id'];
             if (UserCurrent::havePrivilege('NEWS_ACTION_EDIT_DEL_RETURN')) {
-                joc()->set_var('action_store',
-                    '<a href="javascript:;" onclick="getId(' . $row['id'] . ')" rel="reason-return" class="show-list">Về tin chờ duyệt</a> | <a href="?app=news&page=admin_news&cmd=news_create&news_id=' . $row['id'] . '&from=store">Sửa</a>| <a href="javascript:;" onclick="deleteData(' . $row['id'] . ')">Xóa bài</a><br/>');
+                if ($memcache->get($key_memcache_reading)) {
+                    joc()->set_var('action_store',
+                        '<font color="red">Bài đang mở</font><br>');
+                } else {
+                    joc()->set_var('action_store',
+                        '<a href="javascript:;" onclick="getId(' . $row['id'] . ')" rel="reason-return" class="show-list">Về tin chờ duyệt</a> | <a href="?app=news&page=admin_news&cmd=news_create&news_id=' . $row['id'] . '&from=store">Sửa</a>| <a href="javascript:;" onclick="deleteData(' . $row['id'] . ')">Xóa bài</a><br/>');
+                }
             } else {
                 if (UserCurrent::havePrivilege('NEWS_ACTION_EDIT_STORE')) {
-                    joc()->set_var('action_store',
-                        '<a href="?app=news&page=admin_news&cmd=news_create&news_id=' . $row['id'] . '&from=store">Sửa</a>');
+
+                    if ($memcache->get($key_memcache_reading)) {
+                        joc()->set_var('action_store',
+                            '<font color="red">Bài đang mở</font><br>');
+                    } else {
+                        joc()->set_var('action_store',
+                            '<a href="?app=news&page=admin_news&cmd=news_create&news_id=' . $row['id'] . '&from=store">Sửa</a>');
+                    }
+
                 } else {
                     joc()->set_var('action_store', '');
                 }
@@ -1764,25 +1760,20 @@ class AdminNews extends Form
         Page::setHeader("Quản trị tin bài", "Quản trị tin bài", "Quản trị tin bài");
         //Page::registerFile('admin_news.js', Module::pathJS().'admin_news.js' , 'footer', 'js');
         $user_info = UserCurrent::$current->data;
-        $userObj = new User();
-        $allUser = $userObj->userIdToNameAll();
         $memcache = new Memcache();
         $memcache->addServer('localhost', 11211);
         $key_memcache = 'active_reading';
 
         if ($id) {
-            $active_reading_cache = $memcache->get($key_memcache);
-            foreach ($active_reading_cache as $user_id_reading => $news_id) {
-                if ($news_id == $id && $user_id_reading != $user_info['id']) {
-                    //echo '<center>Bài viết đang được '.$allUser[$user_id_reading]['user_name'].' sửa, yêu cầu <strong>'.$allUser[$user_id_reading]['user_name'].'</strong> lưu bài viết, để bạn được chỉnh sửa tiếp...!</center>';
-                    //die;
-                }
+            $key_memcache .= $id;
+            if ($memcache->get($key_memcache)) {
+                echo '<center>Bài viết đang được người khác sửa!</center>';
+                return;
+            } else {
+                $memcache->set($key_memcache, $id, MEMCACHE_COMPRESSED, 1800);
             }
 
-            $active_reading_cache[$user_info['id']] = $id;
-            $memcache->set($key_memcache, $active_reading_cache, MEMCACHE_COMPRESSED, 3600);
         }
-
 
         $from = SystemIO::get('from', 'def', 'review');
         $row = $_SESSION['news_continue'];
@@ -1858,8 +1849,6 @@ class AdminNews extends Form
 
         $arr_cate_id = explode(',', trim($row['cate_path'], ','));
 
-        //echo count($arr_cate_id).'namđ';
-
         for ($i = 0; $i <= count($arr_cate_id); ++$i) {
             $row['cate_id' . ($i + 1)] = $arr_cate_id[$i];
         }
@@ -1870,7 +1859,6 @@ class AdminNews extends Form
         }
 
         $arraySelected = explode(',', $str_cate_selected);
-        //joc()->set_var('option_cate1',SystemIO::getMutileOption($arr_cate1,$arraySelected));
         joc()->set_var('option_cate1', SystemIO::selectBox($arr_cate1, $arraySelected, "id", "id", "name"));
         if (count($arr_cate_id) > 1) {
             for ($k = 2; $k <= count($arr_cate_id); ++$k) {
@@ -1889,7 +1877,6 @@ class AdminNews extends Form
             joc()->set_var('option_cate' . $l, '');
         }
 
-        //if($id==0)
 
         joc()->set_var('option_cate2',
             '<select  id="cate2" name="data[cate_id2][]" multiple="multiple" style="height:100px;"><option>Chọn danh mục cấp 2</option>' . SystemIO::getOption($arr_cate2,
