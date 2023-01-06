@@ -139,7 +139,7 @@
     RewriteRule ^phap-dinh/nhat-ky-vanh-mong-ngua.rss?$ rss.php?cate_id=273 [L]
     RewriteRule ^xa-hoi/gia-dinh.rss?$ rss.php?cate_id=283 [L]
     RewriteRule ^hoat-dong-toa-an/trien-khai-cai-cach/.rss?$ rss.php?cate_id=338 [L]
-    RewriteRule ^bao-ve-nguoi-tieu-dung.rss?$ rss.php?cate_id=283 [L]
+    RewriteRule ^bao-ve-nguoi-tieu-dung.rss?$ rss.php?cate_id=444 [L]
     RewriteRule ^goc-nhin-dau-tu.rss?$ rss.php?cate_id=416 [L]
     RewriteRule ^xa-hoi/giao-thong.rss?$ rss.php?cate_id=283 [L]
     RewriteRule ^congly-24h.rss?$ rss.php?cate_id=398 [L]
@@ -539,8 +539,8 @@
 	RewriteRule ^tam-diem-du-luan/?$ index.php?app=news&page=congly_cate&cate_id=359&%{QUERY_STRING} [L]
             
 	
-	RewriteRule ^bao-ve-nguoi-tieu-dung/trang-([0-9]+)/?$ index.php?app=news&page=congly_cate&cate_id=392&page_no=$1&%{QUERY_STRING} [L]
-	RewriteRule ^bao-ve-nguoi-tieu-dung/?$ index.php?app=news&page=congly_cate&cate_id=392&%{QUERY_STRING} [L]
+	RewriteRule ^bao-ve-nguoi-tieu-dung/trang-([0-9]+)/?$ index.php?app=news&page=congly_cate&cate_id=444&page_no=$1&%{QUERY_STRING} [L]
+	RewriteRule ^bao-ve-nguoi-tieu-dung/?$ index.php?app=news&page=congly_cate&cate_id=444&%{QUERY_STRING} [L]
 
 	RewriteRule ^phap-luat/tu-van-phap-luat/trang-([0-9]+)/?$ index.php?app=news&page=congly_cate&cate_id=396&page_no=$1&%{QUERY_STRING} [L]
     RewriteRule ^phap-luat/tu-van-phap-luat/?$ index.php?app=news&page=congly_cate&cate_id=396&%{QUERY_STRING} [L]
