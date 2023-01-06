@@ -42,7 +42,8 @@ class Infographic
             $content = str_replace(array('width', 'height'), array('', ''), $content);
             Page::setHeader($detail['title'], $detail['tag'], $detail['description']);
             joc()->set_var('title', $detail['title']);
-            joc()->set_var('src', IMG::show($detail));
+            joc()->set_var('src',
+                'https://congly.vn/data/news/' . date('Y/n/j/', (int)$detail['time_created']) . $detail['img1']);
             joc()->set_var('time_public_detail', date('d/n/Y H:i', $detail['time_public']));
             joc()->set_var('description', $detail['description']);
             joc()->set_var('detail', $content);
@@ -53,14 +54,16 @@ class Infographic
         /* Set tin liên quan */
         $relate = array();
         if ($detail['relate'] != '') {
-            $relate = $frontendObj->getNews("store", "id,title,cate_id,time_public", "id IN(" . rtrim($detail['relate'], ",") . ")", "time_public DESC", "0,5", "id", true);
+            $relate = $frontendObj->getNews("store", "id,title,cate_id,time_public",
+                "id IN(" . rtrim($detail['relate'], ",") . ")", "time_public DESC", "0,5", "id", true);
         }
 
         $html_r = '';
         if (count($relate) > 0) {
             foreach ($relate as $r) {
                 if ($list_category[$r['cate_id']]['alias'] != "") {
-                    $html_r .= '<li><a class="title5" href="' . Url::link_detail($r, $list_category) . '" title="' . htmlspecialchars($r['title']) . '">' . $r['title'] . '</a></li>';
+                    $html_r .= '<li><a class="title5" href="' . Url::link_detail($r,
+                            $list_category) . '" title="' . htmlspecialchars($r['title']) . '">' . $r['title'] . '</a></li>';
                 }
             }
         }
@@ -72,7 +75,9 @@ class Infographic
 
         //Các tin mới khác danh mục
         $detail['cate_id'] = isset($detail['cate_id']) ? $detail['cate_id'] : 1;
-        $newsest = $frontendObj->getNews("store", "id,title,cate_id,img1,time_public,time_created", "cate_id != '269' AND cate_path NOT LIKE '%,338,%' AND cate_id!=" . (int)$detail['cate_id'], "time_public DESC", "0,8", "id", true);
+        $newsest = $frontendObj->getNews("store", "id,title,cate_id,img1,time_public,time_created",
+            "cate_id != '269' AND cate_path NOT LIKE '%,338,%' AND cate_id!=" . (int)$detail['cate_id'],
+            "time_public DESC", "0,8", "id", true);
         joc()->set_block('Detail', 'Other', 'Other');
         $html_newest = '';
         if (count($newsest) > 0) {
@@ -92,7 +97,9 @@ class Infographic
 
         //Các tin mới cùng danh mục
         $detail['cate_id'] = isset($detail['cate_id']) ? $detail['cate_id'] : 1;
-        $newsest_same = $frontendObj->getNews("store", "id,title,cate_id,img1,time_public,time_created", "id != {$detail['id']} AND time_public < " . $detail['time_public'] . " AND cate_id=" . (int)$detail['cate_id'], "time_public DESC", "0,8", "id", true);
+        $newsest_same = $frontendObj->getNews("store", "id,title,cate_id,img1,time_public,time_created",
+            "id != {$detail['id']} AND time_public < " . $detail['time_public'] . " AND cate_id=" . (int)$detail['cate_id'],
+            "time_public DESC", "0,8", "id", true);
         joc()->set_block('Detail', 'Same', 'Same');
         $html_newest = '';
         if (count($newsest) > 0) {

@@ -186,6 +186,10 @@ class Congly_Home_Center
          * Hoạt động Chánh án và các Phó Chánh án
          */
         $this->setVarBoxChanhAn($frontendObj);
+        /**
+         * Show adv
+         */
+        $this->showAdvHome();
         $html = joc()->output("Congly_Home_Center");
         joc()->reset_var();
         return $html;
@@ -220,7 +224,9 @@ class Congly_Home_Center
             $i = 0;
             $arr_news_cate = array();
             foreach ($rss_feed->channel->item as $node) {
-                if ($i > 8) break;
+                if ($i > 8) {
+                    break;
+                }
                 $arr_news_cate[] = array(
                     'title' => (string)$node->title,
                     'href' => (string)$node->link,
@@ -230,7 +236,8 @@ class Congly_Home_Center
             }
 
             $metaSite = $this->getSiteOG($arr_news_cate['0']['href']);
-            joc()->set_var('poster', isset($metaSite['image']) ? $metaSite['image'] : 'webskins/skins/news/images/tvcongly.jpg');
+            joc()->set_var('poster',
+                isset($metaSite['image']) ? $metaSite['image'] : 'webskins/skins/news/images/tvcongly.jpg');
             $k = 1;
             foreach ($arr_news_cate as $row) {
                 joc()->set_var('href_' . $prefix . $k, $row['href']);
@@ -327,13 +334,16 @@ class Congly_Home_Center
                 if ($row['img']) {
                     joc()->set_var('topic_img_' . $k, 'http://' . $_SERVER['HTTP_HOST'] . '/data/topic/' . $row['img']);
                 } else {
-                    joc()->set_var('topic_img_' . $k, 'http://' . $_SERVER['HTTP_HOST'] . '/webskins/skins/news/images/noimg.jpg');
+                    joc()->set_var('topic_img_' . $k,
+                        'http://' . $_SERVER['HTTP_HOST'] . '/webskins/skins/news/images/noimg.jpg');
                 }
             } else {
                 if ($row['img']) {
-                    joc()->set_var('topic_img_' . $k, 'https://' . $_SERVER['HTTP_HOST'] . '/data/topic/' . $row['img']);
+                    joc()->set_var('topic_img_' . $k,
+                        'https://' . $_SERVER['HTTP_HOST'] . '/data/topic/' . $row['img']);
                 } else {
-                    joc()->set_var('topic_img_' . $k, 'https://' . $_SERVER['HTTP_HOST'] . '/webskins/skins/news/images/noimg.jpg');
+                    joc()->set_var('topic_img_' . $k,
+                        'https://' . $_SERVER['HTTP_HOST'] . '/webskins/skins/news/images/noimg.jpg');
                 }
             }
 
@@ -354,5 +364,118 @@ class Congly_Home_Center
             }
         }
         return $specificTags ? array_intersect_key($res, array_flip($specificTags)) : $res;
+    }
+
+    public function showAdvHome()
+    {
+        $host = 'congly.vn';
+        $text = '<a href="http://' . $host . '/358/hoa-giai-doi-thoai-tai-toa-an/">
+                <img title="" src="http://' . $host . '/adv/hoa_giai_anh.gif" alt="">
+            </a>
+            <a href="http://tv.congly.vn/phim-tai-lieu-toa-an-nhan-dan-xet-xu-nhung-vu-an-dien-hinh-tap-1-d6509.html">
+                <img src="http://' . $host . '/adv/Phim-tai-lieu-TAND.gif" alt="">
+            </a>
+            <a target="_blank" href="https://toaan.gov.vn">
+                <img src="http://' . $host . '/adv/tandtc.png" width="300px">
+            </a>
+             <a href="http://' . $host . '/phap-luat/nhan-tin/huong-dan-thu-tuc-nhan-tin-98458.html">
+                <img src="http://' . $host . '/data/adv/2013/6/huong-dan-thu-tuc1-ds1-copy-ok.gif" alt="">
+            </a>
+            <a href="http://' . $host . '/phap-luat/nhan-tin/">
+                <img title="" src="http://' . $host . '/data/adv/2013/6/Thongtincanbietok2.gif" alt="">
+            </a>
+			 <a href="https://portal.vietcombank.com.vn/news/Pages/home.aspx">
+                <img title="" src="http://' . $host . '/adv/vietcombank.jpg" alt="">
+            </a>
+            <a href="https://www.bidv.com.vn/uudaithe/">
+                <img title="" src="http://' . $host . '/adv/bidv_12_10.jpg" alt="">
+            </a>
+        
+            <a target="_blank" href="https://thacogroup.vn">
+                <img src="http://' . $host . '/adv/truonghai.gif" width="300px">
+            </a>
+            <a href="https://www.vietinbank.vn/vn/tin-tuc/Mien-phi-6-thang-duy-tri-VietinBank-iPay-cho-khach-hang-dang-ky-moi-20180321151131.html" target="_blank">
+                <img style="padding:0px 0px 0px 0px;" width="300" src="http://' . $host . '/adv/viettinban166.jpg" alt="">
+           </a>
+           <a target="_blank" href="http://novalandexpo.com.vn/?utm_source=congly&utm_medium=banner_300x300&utm_campaign=Expo">
+                <img src="http://' . $host . '/adv/novalland123.gif" width="300px">
+            </a>
+            <a href="https://phuquoc-marina.vn/intercontinental-phu-quoc/" target="_blank">
+                <img width="300" style="padding:5px 0px 10px 0px; display: none" src="http://' . $host . '/adv/home2home.gif" alt="Viet combank">
+            </a>
+             <a href="http://tpb.vn
+             " target="_blank">
+                    <img style="padding:5px 0px 5px 0px;" width="290" src="http://' . $host . '/adv/son_tung.jpg" alt="">
+            </a>
+            <a target="_blank">
+                <img src="http://' . $host . '/adv/namabank.png" width="300px" />
+            </a>
+            <a href="https://q7riverside.com.vn/" target="_blank">
+                <img style="padding:5px 0px 5px 0px;" width="300" src="http://' . $host . '/adv/canhoq7.gif"alt="">
+            </a>
+           <a style="display: none" href="https://www.bidv.com.vn/bidv/ca-nhan/khuyen-mai/uu-dai-khac/bidv-cho-cuoc-song-xanh" target="_blank">
+                    <img style="padding:5px 0px 5px 0px;" width="290" src="http://' . $host . '/adv/bidvmoi.gif" alt="">
+            </a>
+             <a href="#" target="_blank" style="display: none">
+                <img width="1" height="1" style="padding:5px 0px 0px 0px;" src="http://' . $host . '/adv/bia.jpg" alt="Bia">
+            </a>';
+
+        joc()->set_var('adv_home_0', $text);
+        $adv_home = '<a target="_blank" href="https://asset.1cdn.vn/cly/upload/Bệnh viện đa khoa Xanh pôn.jpg">
+                                    <img width="290px" src="https://asset.1cdn.vn/cly/upload/300x150 p Bệnh viện đa khoa Xanh pôn.jpg">
+                                </a>
+                                <a target="_blank" href="https://bimgroup.com/vi">
+                                    <img width="290px" src="https://asset.1cdn.vn/cly/upload/Bim.jpg">
+                                </a>
+                                <a href="https://asset.1cdn.vn/cly/upload/Phòng VHTT thành phố Vũng Tàu-16092022.jpg">
+                                    <img width="290px" src="https://asset.1cdn.vn/cly/upload/300x150px Phòng văn hóa và thông tin thành phố Vũng Tàu-16092022.png">
+                                </a>
+                                <a href="https://asset.1cdn.vn/cly/upload/dienlucbacgiang2709.jpg">
+                                    <img width="290px" src="https://asset.1cdn.vn/cly/upload/300x150px Công ty điện lực Bắc Giang-16092022.jpg">
+                                </a>
+                                <a href="https://congly.vn/tandtc-phat-dong-chuong-trinh-hien-mau-nhan-dao-giot-hong-se-chia-nam-2022-203892.html">
+                                    <img width="290px" src="https://asset.1cdn.vn/cly/upload/HienMau1.jpg">
+                                </a>
+                                <a target="_blank" href="https://asset.1cdn.vn/cly/upload/Công ty CP Xi măng Vicem Bút Sơn.jpg">
+                                    <img width="290px" src="https://asset.1cdn.vn/cly/upload/300x150pxmbs.png" alt="banner">
+                                </a>
+                                <a>
+                                    <img width="290px" src="https://asset.1cdn.vn/cly/upload/PrintAd-A5ngang-01.jpg" alt="banner">
+                                </a>
+                                <a>
+                                    <img width="290px" src="https://asset.1cdn.vn/cly/upload/ICIC chot.jpg" alt="banner">
+                                </a>
+                                <a target="_blank" href="https://www.bidv.com.vn/">
+                                    <img width="290px" src="https://asset.1cdn.vn/cly/upload/bidv_10-5-2022.png" alt="banner">
+                                </a>
+                                <a href="https://congly.vn/ban-thuong-vu-dang-uy-tandtc-gap-mat-chuc-mung-doan-tncs-ho-chi-minh-tandtc-205270.html">
+                                    <img width="290px" src="https://asset.1cdn.vn/cly/upload/banner-6-5-2022.jpg" alt="banner">
+                                </a>
+                                <a target="_blank" href="http://www.vnpost.vn/">
+                                    <img width="290px" src="https://asset.1cdn.vn/cly/upload/930 x 764_23042021.png" alt="banner">
+                                </a>
+                              
+                                <a>
+                                    <img width="290px" src="https://asset.1cdn.vn/cly/upload/Van Huong.jpg">
+                                </a>
+                                <a target="_blank" href="https://asset.1cdn.vn/cly/upload/benhvienphusan23122021_link.jpg">
+                                    <img width="290px" src="https://asset.1cdn.vn/cly/upload/benhvienphusan23122021.jpg">
+                                </a>
+                                <a target="_blank" href="https://asset.1cdn.vn/cly/upload/Công ty tuyn than Hòn Gai.jpg">
+                                    <img width="290px" src="https://asset.1cdn.vn/cly/upload/300x150px Công ty tuyển than Hòn Gai - Vinacomin.jpg">
+                                </a>
+                                </a>
+                                <img width="290px" src="https://asset.1cdn.vn/cly/upload/phongvanhoathongtintinhthainguyen.png">
+                                <img width="290px" src="https://asset.1cdn.vn/cly/upload/300x150pxtapdoandienlucvn.jpg">
+                                                          
+                            
+                                <a target="_blank" href="https://www.baca-bank.vn/SitePages/website/tin-tuc.aspx?ttid=662&amp;lttid=18&amp;pb=False&amp;s=TT&amp;tt=BAC%20A%20BANK%20CH%C3%8DNH%20TH%E1%BB%A8C%20RA%20M%E1%BA%AET%20INTERNET%20BANKING%20&amp;%20MOBILE%20BANKING%20PHI%C3%8AN%20B%E1%BA%A2N%20M%E1%BB%9AI&amp;ltt=Tin%20S%E1%BA%A3n%20ph%E1%BA%A9m%20-%20D%E1%BB%8Bch%20v%E1%BB%A5">
+                                    <img width="290px" src="https://asset.1cdn.vn/cly/upload/300x250bac-a-bank.png" alt="banner">
+                                </a>
+                              
+                                <a target="_blank" href="https://asset.1cdn.vn/cly/upload/Công ty Nhiệt điện Thái Bình.jpg">
+                                 <img width="290px" src="https://asset.1cdn.vn/cly/upload/300x150px Công ty Nhiệt điện Thái Bình.jpg" alt="banner">
+                                </a>';
+        joc()->set_var('adv_home', $adv_home);
     }
 }

@@ -1535,6 +1535,7 @@ class AdminNews extends Form
             '2' => 'Bài dịch',
             '3' => 'Bài tự viết',
             '4' => 'Bài tổng hợp',
+            '5' => 'Tin tự viết',
             '6' => 'Infographic'
         );
         $type_post_t = '';
@@ -2017,6 +2018,7 @@ class AdminNews extends Form
             '2' => 'Bài dịch',
             '3' => 'Bài tự viết',
             '4' => 'Bài tổng hợp',
+            '5' => 'Tin tự viết',
             '6' => 'Infographic'
         );
         $type_post = '';

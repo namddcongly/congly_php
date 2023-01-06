@@ -94,11 +94,11 @@ class Congly_browse
         joc()->set_var('cate_desc_href', $list_category[$cate_id]['alias']);
         // Danh mục con
         if ($list_category[$cate_id]['cate_id1']) {
-            $list_news = $frontendObj->getNews('store', 'id,title,description,img1,time_public,time_created,cate_id,is_video,is_img', 'cate_id=' . $cate_id, 'time_public DESC', $limit);
+            $list_news = $frontendObj->getNews('store', 'id,title,description,img1,time_public,time_created,cate_id,is_video,is_img,type_post', 'cate_id=' . $cate_id, 'time_public DESC', $limit);
             $totalRecord = $frontendObj->countRecord('store', 'cate_id=' . $cate_id);
         } else {
             #$list_news = $frontendObj->getNews('store', 'id,title,description,img1,time_public,time_created,cate_id,is_video,is_img', 'cate_path LIKE "%,' . $cate_id . ',%"', 'id DESC', $limit);
-            $list_news = $frontendObj->getNews('store', 'id,title,description,img1,time_public,time_created,cate_id,is_video,is_img', 'cate_path LIKE "%,' . $cate_id . ',%"', 'time_public DESC', $limit);
+            $list_news = $frontendObj->getNews('store', 'id,title,description,img1,time_public,time_created,cate_id,is_video,is_img,type_post', 'cate_path LIKE "%,' . $cate_id . ',%"', 'time_public DESC', $limit);
             $totalRecord = $frontendObj->countRecord('store', 'cate_path LIKE "%,' . $cate_id . ',%"');
         }
         $list_news_top = array_slice($list_news, 0, 6);
