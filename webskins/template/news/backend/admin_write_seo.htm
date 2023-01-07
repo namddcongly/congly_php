@@ -28,7 +28,7 @@ th
 		</li>
 		<li>
 			<label>&nbsp;</label>
-			<input type="button"  value="Tìm kiếm" name="Search" onClick="searchNews()">
+			<input type="button" class="button"  value="Tìm kiếm" name="Search" onClick="searchNews()">
 		</li>
 	</ul>
 	<div class="line top"></div><div class="clear"></div>
@@ -51,10 +51,10 @@ th
 						<p style="color:#993300">Trong mục: {path}</p>
 						<p><input type="text"  value="{title_seo}" id="title_{nw_id}" style="width:900px;"/></p>
 						<p><textarea cols="145" rows="5" id="description_{nw_id}">{description}</textarea></p>
-						<p style="text-align:left;" id="button_seo_{nw_id}"><input type="button" value="Cập nhật"  onclick="writeSeo({nw_id})"/></p>
+						<p style="text-align:left;" id="button_seo_{nw_id}"><input type="button" class="button" value="Cập nhật"  onclick="writeSeo({nw_id})"/></p>
 					 	<p>Thêm link vào box bài viết mỗi link cách nhau đâu "||"</p>
 						<p><textarea cols="145" rows="3" id="link_{nw_id}">{link_exchange}</textarea></p>
-						<p style="text-align:right; margin-right:50px;" id="button_link_{nw_id}"><input type="button" value="Thêm link"  onclick="addLink({nw_id})"/></p>
+						<p style="text-align:right; margin-right:50px;" id="button_link_{nw_id}"><input type="button" class="button" value="Thêm link"  onclick="addLink({nw_id})"/></p>
 					  </td>
 					</tr>
 				<!-- END ListRow -->

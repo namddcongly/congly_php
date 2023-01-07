@@ -17,7 +17,7 @@
 		</li>
 		<li>
 			<label>&nbsp;</label>
-			<input type="button"  value="Tìm kiếm" name="Search" onClick="searchNews()">
+			<input type="button" class="button"  value="Tìm kiếm" name="Search" onClick="searchNews()">
 		</li>
 	</ul>
 	<div class="line top"></div>
@@ -65,13 +65,13 @@
     <h2 style="padding-left:5px; border-bottom:1px solid #990000"  class="jqDnR jqDrag">Lý do không duyệt ĐỀ TÀI<label class="popup-close button-close"><b>X</b></label></h2>
     <textarea cols="85" rows="5" style="background-color:#FFFFFF;" id="reason"></textarea>
     <input type="hidden" value="" name="return_id" id="return_id" />
-    <input  type="button" name="Trả về" value="Trả về" onclick="doNotCensor()" style="float:right"/>
+    <input  type="button" class="button" name="Trả về" value="Trả về" onclick="doNotCensor()" style="float:right"/>
 </div>
 <div id="reason-censor" class="popup-choose" style="position:relative; margin-top:-120px; z-index: 9999">
     <h2 style="padding-left:5px; border-bottom:1px solid #990000"  class="jqDnR jqDrag">Ý kiến chỉ đạo<label class="popup-close button-close"><b>X</b></label></h2>
     <textarea cols="85" rows="5" style="background-color:#FFFFFF;" id="censor"></textarea>
     <input type="hidden" value="" name="censor_id" id="censor_id" />
-    <input  type="button" name="Đồng ý" value="Đồng ý" onclick="doCensor()" style="float:right"/>
+    <input  type="button" class="button" name="Đồng ý" value="Đồng ý" onclick="doCensor()" style="float:right"/>
 </div>
 <script type="text/javascript">
 	$(function(){

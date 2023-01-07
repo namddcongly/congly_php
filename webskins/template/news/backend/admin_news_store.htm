@@ -37,7 +37,7 @@
         </li>
         <li>
             <label>&nbsp;</label>
-            <input type="button" value="Tìm kiếm" name="Search" onClick="searchNews()">
+            <input type="button" class="button" value="Tìm kiếm" name="Search" onClick="searchNews()">
         </li>
     </ul>
     <div class="line top"></div>
@@ -74,7 +74,7 @@
                     <p style="color:#993300">Trong mục: {path}</p>
                     <p style="color:#993300">Thuộc dòng sự kiện &raquo;<select id="topic_{nw_id}">
                         <option value="0">Chọn sự kiên</option>
-                        {option_topic}</select> <input type="button" name="Chọn sự kiện" value="Chọn sự kiện"
+                        {option_topic}</select> <input type="button" class="button" name="Chọn sự kiện" value="Chọn sự kiện"
                                                        onclick="chooseTopic({nw_id})" style="cursor:pointer"/><font
                             color="red" id="rp_{nw_id}"></font></p>
                 </td>
@@ -117,7 +117,7 @@
             class="popup-close button-close"><b>X</b></label></h2>
     <textarea cols="100" rows="5" style="background-color:#FFFFFF;" id="reason"></textarea>
     <input type="hidden" value="" name="return_id" id="return_id"/>
-    <input type="button" name="Trả bài" value="Trả bài" onclick="newsReturn()" style="float:right"/>
+    <input type="button" class="button" name="Trả bài" value="Trả bài" onclick="newsReturn()" style="float:right"/>
 </div>
 
 <script type="text/javascript">

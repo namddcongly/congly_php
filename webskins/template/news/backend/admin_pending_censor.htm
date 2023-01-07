@@ -27,7 +27,7 @@
         </li>
         <li>
             <label>&nbsp;</label>
-            <input type="button" value="Tìm kiếm" name="Search" onClick="searchNews()">
+            <input type="button" class="button" value="Tìm kiếm" name="Search" onClick="searchNews()">
         </li>
     </ul>
     <div class="line top"></div>
@@ -126,8 +126,8 @@
                 <!-- END Property -->
                 <tr>
                     <td></td>
-                    <td><input type="button" value="Thiết lập" onclick="setMultiProperty();"/></td>
-                    <td align="center"><input type="button" name="cancel" value="Đóng"
+                    <td><input type="button" class="button" value="Thiết lập" onclick="setMultiProperty();"/></td>
+                    <td align="center"><input type="button" class="button" name="cancel" value="Đóng"
                                               onclick="hideJQ('table-property')"/></td>
                 </tr>
             </table>
@@ -150,7 +150,7 @@
             class="popup-close button-close"><b>X</b></label></h2>
     <textarea cols="85" rows="5" style="background-color:#FFFFFF;" id="reason"></textarea>
     <input type="hidden" value="" name="return_id" id="return_id"/>
-    <input type="button" name="Trả bài" value="Trả bài" onclick="newsReturn()" style="float:right"/>
+    <input type="button" class="button" name="Trả bài" value="Trả bài" onclick="newsReturn()" style="float:right"/>
 </div>
 <script type="text/javascript">
     $(function () {

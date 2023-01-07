@@ -25,11 +25,11 @@ th
 				{option_category}
 			</select>&nbsp;
 			<input type="text" name="add_cate" id="add_cate"  value="" maxlength="2"  style="width:30px;"/>
-			<input type="button" value="Thêm số báo mới"  onclick="addCate()" style="cursor:pointer;"/> &nbsp;(Nhập số  từ 1-9)
+			<input type="button" class="button" value="Thêm số báo mới"  onclick="addCate()" style="cursor:pointer;"/> &nbsp;(Nhập số  từ 1-9)
 		</li>
 		<li>
 			<label>&nbsp;</label>
-			<input type="button"  value="Tìm kiếm" name="Search" onClick="searchNews()">
+			<input type="button" class="button"  value="Tìm kiếm" name="Search" onClick="searchNews()">
 		</li>
 	</ul>
 	<div class="line top"></div><div class="clear"></div>
@@ -58,7 +58,7 @@ th
 						<p style="color:#993300">Trong số báo {path}</p>
 					  </td>
 					  <td class="bdleft"  align="center">
-					  		<input type="text" style="width:20px;" value="{page}" maxlength="2" id="{nw_id}">&nbsp;<input type="button"  value="Cập nhât" onclick="updatePage('{nw_id}')" style="cursor:pointer;"/><br/><font id="rp_{nw_id}" color="#990000"></font>
+					  		<input type="text" style="width:20px;" value="{page}" maxlength="2" id="{nw_id}">&nbsp;<input type="button" class="button"  value="Cập nhât" onclick="updatePage('{nw_id}')" style="cursor:pointer;"/><br/><font id="rp_{nw_id}" color="#990000"></font>
 					  </td>
 					  <td class="bdleft" align="center"><p><img src="{img}" width="200px;"></p></td>
 					  <td class="bdleft" align="left">

@@ -18,7 +18,7 @@ th
 		</li>
 		<li>
 			<label>&nbsp;</label>
-			<input type="button"  value="Tìm kiếm" name="Search" onClick="searchNews()">
+			<input type="button" class="button"  value="Tìm kiếm" name="Search" onClick="searchNews()">
 		</li>
 	</ul>
 	<div class="line top"></div><div class="clear"></div>
@@ -77,12 +77,12 @@ th
 	<textarea cols="84" rows="5" style="background-color:#FFFFFF;" id="reason"></textarea>
 	<input type="hidden" value="" name="return_id" id="return_id" />
 	<input type="hidden" value="" name="status_value" id="status_value" />
-	<input  type="button" name="Trả bài" value="Trả bài" onclick="newsReturn()" style="float:right"/>
+	<input  type="button" class="button" name="Trả bài" value="Trả bài" onclick="newsReturn()" style="float:right"/>
 </div>
 <div id="tinnhan-chidao" class="popup-choose" style="position:relative; margin-top:-200px; margin-right:110px;">
 	<h2 style="padding-left:5px; border-bottom:1px solid #990000"  class="jqDnR jqDrag">Gửi chỉ đạo cho nhân viên<label class="popup-close button-close"><b>X</b></label></h2>
 	<textarea cols="84" rows="5" style="background-color:#FFFFFF;" id="message"></textarea>
-	<input  type="button" name="Gửi chỉ đạo" value="Gửi chỉ đạo" onclick="sendMessage()" style="float:right"/>
+	<input  type="button" class="button" name="Gửi chỉ đạo" value="Gửi chỉ đạo" onclick="sendMessage()" style="float:right"/>
 </div>
 <script type="text/javascript">
 	$(function(){
