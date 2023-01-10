@@ -49,7 +49,10 @@ class AdminBaogiay extends Form
 		
 	}
 	function index()
-	{	
+	{
+        if (!UserCurrent::isLogin()) {
+            @header('Location:?app=main&page=admin_login');
+        }
 		$cmd=SystemIO::get('cmd','str','news_store');
 		$news_id=SystemIO::get('news_id','int',0);
 		switch($cmd)

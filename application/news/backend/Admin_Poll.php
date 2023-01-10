@@ -143,6 +143,9 @@ class Admin_Poll extends Form
 	
 	function index()
 	{
+        if (!UserCurrent::isLogin()) {
+            @header('Location:?app=main&page=admin_login');
+        }
 		Page::setHeader("Quản lý bình chọn", "news, tin tức", "Quản lý danh mục tin tức");		
 		
 		joc()->set_file('Poll', Module::pathTemplate()."backend".DS."admin_poll.htm");	

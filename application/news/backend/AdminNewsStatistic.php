@@ -21,6 +21,9 @@ class AdminNewsStatistic
 		if(!UserCurrent::havePrivilege('ADMIN_STATISTIC')){
 			//Url::urlDenied();
 		}
+        if (!UserCurrent::isLogin()) {
+            @header('Location:?app=main&page=admin_login');
+        }
 		$cmd 	= SystemIO::get('cmd');
 		switch($cmd)
 		{

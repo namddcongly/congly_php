@@ -56,8 +56,7 @@ class AdminTopic extends Form
     function index()
     {
         if (!UserCurrent::isLogin()) {
-            echo 'Bạn chưa Login!';
-            die;
+            @header('Location:?app=main&page=admin_login');
         }
         $cmd = SystemIO::get('cmd', 'str', 'admin_topic');
         $id = SystemIO::get('id', 'int', 0);

@@ -1772,16 +1772,6 @@ class AdminNews extends Form
         $memcache->addServer('localhost', 11211);
         $key_memcache = 'active_reading';
 
-        if ($id) {
-            $key_memcache .= $id;
-            if ($memcache->get($key_memcache)) {
-                echo '<center>Bài viết đang được người khác sửa!</center>';
-                return;
-            } else {
-                $memcache->set($key_memcache, $id, MEMCACHE_COMPRESSED, 1800);
-            }
-
-        }
 
         $from = SystemIO::get('from', 'def', 'review');
         $row = $_SESSION['news_continue'];
@@ -1834,6 +1824,16 @@ class AdminNews extends Form
                 }
             }
         }
+        if ($id && $from == 'store') {
+            $key_memcache .= $id;
+            if ($memcache->get($key_memcache) && $memcache->get('user_active_read_' . $user_info['id']) != $row['id']) {
+                echo '<center>Bài viết đang được người khác sửa!</center>';
+                die;
+            } else {
+                $memcache->set($key_memcache, $id, MEMCACHE_COMPRESSED, 900);
+                $memcache->set('user_active_read_' . $user_info['id'], $row['id'], MEMCACHE_COMPRESSED, 900);
+            }
+        }
 
         $list_category = $newsObj->getListCategory('', 'id ASC');
         $arr_cate1 = array();
@@ -1873,7 +1873,7 @@ class AdminNews extends Form
                 $arr_cate = "arr_cate" . $k;
                 if ($row['cate_id' . $k]) {
                     joc()->set_var('option_cate' . ($k),
-                        '<select  id="cate' . ($k) . '" name="data[cate_id' . ($k) . '][]" multiple="multiple" style="height:100px;"><option >Chọn danh mục cấp ' . ($k) . '</option>' . SystemIO::getMutileOption($$arr_cate,
+                        '<select  id="cate' . ($k) . '" name="data[cate_id' . ($k) . '][]" multiple="multiple" style="height:100px;><option style="font-weight: bold">Chọn danh mục cấp ' . ($k) . '</option>' . SystemIO::getMutileOption($$arr_cate,
                             $arraySelected) . '</select>'); // 2 day $$ la dung
                 } else {
                     joc()->set_var('option_cate' . $k, '');
@@ -1887,7 +1887,7 @@ class AdminNews extends Form
 
 
         joc()->set_var('option_cate2',
-            '<select  id="cate2" name="data[cate_id2][]" multiple="multiple" style="height:100px;"><option>Chọn danh mục cấp 2</option>' . SystemIO::getOption($arr_cate2,
+            '<select  id="cate2" name="data[cate_id2][]" multiple="multiple" style="height:100px;"><option style="font-weight: bold">Chọn danh mục cấp 2</option>' . SystemIO::getOption($arr_cate2,
                 (int)$row['cate_id2']) . '</select>');
         /* load cate_other co xac dinh chinh phu ro rang */
         if ($row['cate_other']) {
@@ -1950,9 +1950,10 @@ class AdminNews extends Form
         if ($row['img1']) {
             joc()->set_var('img1',
                 $row['img1'] ? '<img id="img1" src="' . IMG::show($newsObj->getPathNews($row['time_created']),
-                        $row['img1']) . '" width="180px;" /><br/>' : '');
+                        $row['img1']) . '" width="280px;" title="Click để thay đổi ảnh" style="border: 2px solid #ebebeb; min-height: 140px; cursor: pointer" /><br/>' : '');
         } else {
-            joc()->set_var('img1', '<img id="img1" width="180px;" /><br/>');
+            joc()->set_var('img1',
+                '<img id="img1" title="Click để thay đổi ảnh" src="webskins/skins/news/images/upload_img1.png" width="280px;" style="border: 2px solid #ebebeb; min-height: 140px; cursor: pointer" /><br/>');
         }
 
         joc()->set_var('img2',
@@ -2042,7 +2043,7 @@ class AdminNews extends Form
         return $html;
     }
 
-    function adminPrivate()
+    private function adminPrivate()
     {
         joc()->set_file('AdminNews', Module::pathTemplate() . "backend/admin_private.htm");
         Page::setHeader("Quản trị tin bài", "Quản trị tin bài", "Quản trị tin bài");
@@ -2165,14 +2166,14 @@ class AdminNews extends Form
         return $html;
     }
 
-    function autoDelNewsHome()
+    private function autoDelNewsHome()
     {
         return;
         $newsObj = new BackendNews();
         $list_news = $newsObj->getListData('store_home', 'nw_id,cate_id,time_public,property',
-            'time_public < ' . time(), 'time_public ASC', '0,10000', '', false);
+            'time_public < ' . time() - 100 * 86400, 'time_public ASC', '0,100', '', false);
         $list_id = '';
-        $time = time() - 10 * 86400;
+        $time = time() - 100 * 86400;
         foreach ($list_news as $row) {
             if ($row['time_public'] < $time) {
                 $list_id .= $row['nw_id'] . ',';
@@ -2186,7 +2187,7 @@ class AdminNews extends Form
         }
     }
 
-    function adminNewsComment()
+    private function adminNewsComment()
     {
         joc()->set_file('AdminNews', Module::pathTemplate() . "backend/admin_news_comment.htm");
         Page::setHeader("Quản trị tin bài", "Quản trị bình luận", "Quản trị bình luận");
@@ -2250,7 +2251,7 @@ class AdminNews extends Form
         return $html;
     }
 
-    function adminTagMeta()
+    private function adminTagMeta()
     {
         ini_set('display_errors', 1);
         joc()->set_file('AdminNews', Module::pathTemplate() . "backend/admin_tag_meta.htm");
@@ -2272,7 +2273,7 @@ class AdminNews extends Form
         return $html;
     }
 
-    function adminRecycleBin()
+    private function adminRecycleBin()
     {
         //ini_set("display_errors", 1);
         joc()->set_file('AdminNews', Module::pathTemplate() . "backend/admin_recycle_bin.htm");
@@ -2365,7 +2366,7 @@ class AdminNews extends Form
         return $html;
     }
 
-    function newsStatistic()
+    private function newsStatistic()
     {
         //ini_set('display_errors',1);
         joc()->set_file('AdminNews', Module::pathTemplate() . "backend/admin_news_statistic1.htm");
@@ -2385,6 +2386,7 @@ class AdminNews extends Form
         if ($page_no < 1) {
             $page_no = 1;
         }
+
         $stt = ($page_no - 1) * $item_per_page + 1;
         $limit = (($page_no - 1) * $item_per_page) . ',' . $item_per_page;
         $q = SystemIO::get('q', 'def', '');
@@ -2460,7 +2462,7 @@ class AdminNews extends Form
         if (!$date_begin && !$date_end) {
             $wh .= ' AND time_public > ' . (time() - 7 * 86399);
         }
-        //echo $wh;
+//echo $wh;
         /* Lay thông tin news */
         $aray_date = array();
         $list_news = $newsObj->getListStore($wh, 'time_public desc', $limit);
@@ -2529,7 +2531,7 @@ class AdminNews extends Form
         }
         joc()->set_var('s', $s);
         /* List news */
-        //ini_set("display_errors", 1);
+//ini_set("display_errors", 1);
         $list_hit = $newsObj->getListHit('store_hit', 'nw_id,hit', 'time_created > ' . (time() - 86400), 'hit DESC',
             '10', 'nw_id');
         $hit_news_id = '';
